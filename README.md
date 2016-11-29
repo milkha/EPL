@@ -2,9 +2,9 @@
 
 For the description of the model and results see "epl.pdf". 
 
-The code for getting the data, munging it, and then, fitting the stan models in the file "epl.R".
+All the code for generating this report is in the R markdown file "epl.rmd".
 
-All this code, plus some description, and some analysis of the fits are in the R markdown file "epl.rmd".
+The Stan model is "stan_model.stan".
 
 The DATA (team's previous and current performances) are in the DATA folder.
 
