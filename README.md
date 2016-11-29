@@ -6,6 +6,6 @@ All the code for generating this report is in the R markdown file "epl.rmd".
 
 The Stan model is "stan_model.stan".
 
-The DATA (team's previous and current performances) are in the DATA folder.
+The DATA (teams' previous and current performances) are in the DATA folder.
 
-The Stan fits (for each week) are saved in the FITS folder.
+The Stan fits (for each week) are saved in a folder with the name FITS (will be created if it does not exist).
