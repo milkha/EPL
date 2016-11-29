@@ -1,4 +1,4 @@
-# Hierarchical Bayesian Modeling of English Premier League
+# Hierarchical Bayesian Modeling of the English Premier League
 
 For the description of the model and results see "epl.pdf". 
 The code for getting the data, munging it, and then, fitting the stan models in the file "epl.R".
