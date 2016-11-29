@@ -95,6 +95,10 @@ for (n in 1:length(lines)) cat(lines[n],'\n');
 
 As mentioned earlier, we fit the model multiple times. At the end of week $w$, we fit the model to all the matches from week 1 to week $w$. In the code below, `epl_w` contains all the data for matches in the first $w$ weeks. We fit the model with 4 chains of length 800 (with the first half for warmup).
 
+```{r, echo=FALSE, comment=NA}
+dir.create("FITS", showWarnings = FALSE)
+```
+
 ```{r fitStan, cache=TRUE, results="hide", message=FALSE}
 library("rstan")
 rstan_options(auto_write = TRUE)
