@@ -141,7 +141,7 @@ coefplot (a_hat[order(prev_perf[,2])], a_se[order(prev_perf[,2])],
           cex.var=.9, mar=c(1,6,5.1,2), xlim=c(-2,2))
 ```
 
-In the next figure, we plot the estimated abilities at the end of the season (i.e., after week 38). This time, we sort the teams in the tables according to their actual ranking at the end of the season. We observe that the estimated abilities are fairly consistent with the actual rankings and the uncertainty intervals are narrower compared to the results after week 1.
+In the next figure, we plot the estimated abilities at the end of the season (i.e., after week 38). This time, we sort the teams in the tables according to their final standings in the table (i.e., sorted according to total points) at the end of the season. We observe that the estimated abilities are fairly consistent with the actual rankings and the uncertainty intervals are narrower compared to the results after week 1.
 
 ```{r, message=FALSE, warnings=FALSE, results=FALSE, echo=FALSE, comment=NA, fig.width=6, fig.height=5}
 library ("arm")
@@ -157,7 +157,7 @@ a_hat <- colMeans(a_sims)
 a_se <- sqrt(colVars(a_sims))
 coefplot (a_hat[order(curr_perf[,2])], a_se[order(curr_perf[,2])], 
           CI=1, varnames=as.character(sort_perf[,1]),
-          main="Team abilities after week 38 (estimate +/- 1 s.e.)\n Teams are sorted according to actual final ranking\n", 
+          main="Team abilities after week 38 (estimate +/- 1 s.e.)\n Teams are sorted according to total achieved points\n", 
           cex.var=.9, mar=c(1,6,5.1,2), xlim=c(-2,2))
 ```
 
