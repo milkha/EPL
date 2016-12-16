@@ -186,7 +186,6 @@ for (w in 1:38) {
 }
 a_min <- a_hat-a_se 
 a_max <- a_hat+a_se
-epl <- readRDS("epl_data.RDS")
 prev_perf <- read.csv('DATA/prev_perf.csv', header = FALSE)
 sort_perf <- prev_perf[with(prev_perf, rev(order(prev_perf[,2]))), ]
 png ("EPL_ability.png", height=10, width=8, units = 'in', res = 600)
