@@ -228,7 +228,7 @@ invisible(dev.off())
 
 # Parameter Estimates
 
-```{r, echo=FALSE, comment=NA, cache=TRUE}
+```{r, echo=FALSE, comment=NA}
 fit <- readRDS("FITS/fit_38.rds")
 sum_fit <- summary(fit)
 sf <- sum_fit$summary
