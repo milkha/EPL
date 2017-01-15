@@ -32,8 +32,8 @@ model {
   vector[ngames] a_diff;
   // Priors
   nu ~ gamma(2,0.1);     
-  b_prev ~ normal(0,5);
-  sigma_a0 ~ normal(0,5);
+  b_prev ~ normal(0,1);
+  sigma_a0 ~ normal(0,1);
   sigma_y ~ normal(0,5);
   b_home ~ normal(0,1);
   sigma_a_raw ~ normal(0,1);

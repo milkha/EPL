@@ -51,8 +51,8 @@ map_to_score <- function(x) {
   x_max <- max(x);   x_min <- min(x);
   return(2*x/(x_max-x_min) - (x_max+x_min)/(x_max-x_min))
 }
-url_csv <- paste("http://www.football-data.co.uk/mmz4281/1516/E0.csv", 
-                 sep="") # Data downloaded from football-data.co.uk
+url_csv <- "http://www.football-data.co.uk/mmz4281/1516/E0.csv"; 
+# Data downloaded from football-data.co.uk
 mydat   <- read.csv(url(url_csv)); epl <- c();
 # teams are assigned IDs 1, 2, ...:
 epl$home_team       <- as.numeric(mydat$HomeTeam)  
@@ -140,7 +140,7 @@ saveRDS(a_sims,"FITS/a_sims.rds")
 Remember that we re-fit the model after each week. In the first table below, we show the estimated team abilities (+/- 1 s.e.) after week 1. The teams in the table are sorted according their performance in the previous season. We observe that after only one match for each team, the estimated abilities are somewhat similar to previous performance with purturbations due to the results in the first week. We also observe that the uncertainty intervals are quite wide; this also makes sesne, because we have only one observation per team.
 
 
-```{r, message=FALSE, warnings=FALSE, results=FALSE, echo=FALSE, comment=NA, fig.width=6, fig.height=6}
+```{r, message=FALSE, warnings=FALSE, results=FALSE, echo=FALSE, comment=NA, fig.width=6, fig.height=5.5}
 library (arm)
 library(rstan)
 library(matrixStats)
@@ -156,7 +156,7 @@ coefplot (a_hat[order(prev_perf[,2])], a_se[order(prev_perf[,2])],
 
 In the next figure, we plot the estimated abilities at the end of the season (i.e., after week 38). This time, we sort the teams in the tables according to their final standings in the table (i.e., sorted according to total points) at the end of the season. We observe that the estimated abilities are fairly consistent with the actual rankings and the uncertainty intervals are narrower compared to the results after week 1.
 
-```{r, message=FALSE, warnings=FALSE, results=FALSE, echo=FALSE, comment=NA, fig.width=6, fig.height=6}
+```{r, message=FALSE, warnings=FALSE, results=FALSE, echo=FALSE, comment=NA, fig.width=6, fig.height=4}
 library (arm)
 library(rstan)
 library(matrixStats)
@@ -175,6 +175,45 @@ We also examine the evolution of abilities for each team over the course of the 
 <div style="width:2in; float:right; padding: 1em">
 ![Leicester performance and position in the table (source: Wikipedia)](Leicester.png)
 </div>
+
+```{r, message=FALSE, warnings=FALSE, results=FALSE, echo=FALSE, comment=NA, fig.width=5, fig.height=2.8}
+library(rstan)
+library (arm)
+library(matrixStats)
+a_hat <- matrix(NA, nrow=38, ncol=20)
+a_se <- matrix(NA, nrow=38, ncol=20)
+for (w in 1:38) { 
+  a_hat[w,] <- colMeans(a_sims[,w,])
+  a_se[w,] <- sqrt(colVars(a_sims[,w,]))
+}
+a_min <- a_hat-a_se 
+a_max <- a_hat+a_se
+x<-c(1:38)
+
+teamname <- "Leicester";  
+ind <- match(teamname, epl$team_names)
+plot(a_hat[,ind], type="l", ylim=c(-2,2),
+     lty = 1, lwd = 3, bty='l', xlab=NA, ylab=NA)
+polygon(c(x, rev(x)), c(a_min[,ind], rev(a_max[,ind])), col = 'grey80', border = NA)
+lines(a_hat[,ind], type="l", ylim=c(-2,2),
+      lty = 1, lwd = 3, bty='l')
+title(teamname, line=0)
+par(new = T)
+g1 <- lapply(ind, function(x) which(epl$home_team %in% x))
+g2 <- lapply(ind, function(x) which(epl$away_team %in% x))
+g <- c(g1[[1]],g2[[1]])
+scd <- epl$score_diff[g] * rep(c(1,-1), each=19)
+aa <- a_hat[,ind]
+scd <- scd[order(g)]
+plot(scd, col = 2, pch=16, axes=F, xlab=NA, ylab=NA, cex=0.7, ylim=c(-6,6))
+axis(side = 4, col="red",col.axis="red",las=1)
+title(xlab = "week",
+      ylab = "team ability",
+      outer = TRUE, line = 3, cex.lab=1.5)
+mtext("team ability",side=2,col="black",line=-1.6, outer = TRUE)
+mtext("week",side=1,col="black",line=-2.6, outer = TRUE)
+
+```
 
 ```{r, message=FALSE, warnings=FALSE, results=FALSE, echo=FALSE, comment=NA, cache=TRUE, fig.keep="none"}
 library(rstan)
@@ -301,7 +340,8 @@ ggplot(df, aes(x = c(1:380))) +
   geom_line(aes(y=scd_hat),colour="darkred") + 
   geom_point(aes(y=scd), size = 0.3) +
   scale_x_continuous(name="match") +
-  scale_y_continuous(name="score difference", minor_breaks = seq(-6, 6, 1)) +
+  scale_y_continuous(name="score difference", minor_breaks = seq(-6, 6, 1), 
+                     sec.axis = dup_axis()) +
   ggtitle("Estimated score differences (red) with 95% intervals (light yellow), \n  50% intervals (dark yellow), and the actual score differences (black)");
 ```
 
@@ -392,7 +432,8 @@ ggplot(df, aes(x = c(1:190))) +
   geom_line(aes(y=scd_hat),colour="darkred") + 
   geom_point(aes(y=scd), size = 0.3) +
   scale_x_continuous(name="match") +
-  scale_y_continuous(name="score difference", minor_breaks = seq(-6, 6, 1)) +
+  scale_y_continuous(name="score difference", minor_breaks = seq(-6, 6, 1), 
+                     sec.axis = dup_axis()) +
   ggtitle("Predicted score differences (red) with 95% intervals (light yellow), \n  50% intervals (dark yellow), and the actual score differences (black)");
 ```
 
