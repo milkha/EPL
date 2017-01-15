@@ -16,30 +16,34 @@ parameters {
   real<lower=0> tau_a;                 // hyper-param for game-to-game variation
   real<lower=1> nu;                    // t-dist degree of freedom
   real<lower=0> sigma_y;               // score_diff variation
-  row_vector<lower=0>[nteams] sigma_a; // game-to-game variation
+  row_vector<lower=0>[nteams] sigma_a_raw; // game-to-game variation
   matrix[nweeks,nteams] eta_a;         // random component
 }
 transformed parameters {
   matrix[nweeks, nteams] a;                        // team abilities
+  row_vector<lower=0>[nteams] sigma_a; // game-to-game variation
   a[1] = b_prev * prev_perf + sigma_a0 * eta_a[1]; // initial abilities (at week 1)
+  sigma_a = tau_a * sigma_a_raw;
   for (w in 2:nweeks) {
     a[w] = a[w-1] + sigma_a .* eta_a[w];           // evolution of abilities
   }
 }
 model {
+  vector[ngames] a_diff;
   // Priors
   nu ~ gamma(2,0.1);     
-  b_prev ~ normal(0,10);
-  sigma_a0 ~ normal(0,10);
-  sigma_y ~ normal(0,10);
-  b_home ~ normal(0,10);
-  sigma_a ~ normal(0,tau_a);
+  b_prev ~ normal(0,5);
+  sigma_a0 ~ normal(0,5);
+  sigma_y ~ normal(0,5);
+  b_home ~ normal(0,1);
+  sigma_a_raw ~ normal(0,1);
   tau_a ~ cauchy(0,1);
   to_vector(eta_a) ~ normal(0,1);
   // Likelihood
-  for (g in 1:ngames)
-    score_diff[g] ~ student_t(nu, a[home_week[g],home_team[g]] - 
-      a[away_week[g],away_team[g]] + b_home, sigma_y);
+  for (g in 1:ngames) {
+     a_diff[g] = a[home_week[g],home_team[g]] - a[away_week[g],away_team[g]];
+  }
+  score_diff ~ student_t(nu, a_diff + b_home, sigma_y);
 }
 generated quantities {
   vector[ngames] score_diff_rep;

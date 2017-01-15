@@ -1,0 +1,10 @@
+base
+plyr
+ggplot2
+StanHeaders
+rstan
+MASS
+Matrix
+lme4
+arm
+matrixStats
