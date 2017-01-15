@@ -31,7 +31,7 @@ transformed parameters {
 model {
   // Priors
   b_home ~ normal(0,1);
-  to_vector(eta_a) ~ normal(1,0.1);
+  to_vector(eta_a) ~ normal(1,0.05);
   // Likelihood
   for (g in 1:ngames) {
     score_diff[g] ~ skellam(a[home_week[g],home_team[g]] + b_home, a[away_week[g],away_team[g]]);
