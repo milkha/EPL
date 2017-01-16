@@ -37,7 +37,7 @@ The ability for the first week is derived from the previous season performance w
 $$
 a_{1,j} \sim \text{N}(b_{prev} a_{0,j}, \sigma_{a0}),
 $$
-where $b_{prev}$ is the regression coefficient and $a_{0,j}$ is a score between $-1$ and $1$ achieved by a linear transformation of the total points achieved from last season. We expect some team-level variation in the initial performance; this is modeled by $\sigma_{a0}$. Both $b_{prev}$ and $\sigma_{a0}$ have weakly informative priors, N$(0,5)$.
+where $b_{prev}$ is the regression coefficient and $a_{0,j}$ is a score between $-1$ and $1$ achieved by a linear transformation of the total points achieved from last season. We expect some team-level variation in the initial performance; this is modeled by $\sigma_{a0}$. Both $b_{prev}$ and $\sigma_{a0}$ have weakly informative priors, N$(0,1)$.
 
 We fit our model every week using all the matches up until that point. (Therefore, we fit our model 38 times.)
 
