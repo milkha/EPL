@@ -9,3 +9,7 @@ The Stan model is in "epl_model.stan".
 The DATA (teams' previous and current performances) are in the DATA folder.
 
 The Stan fits (for each week) are saved in a folder with the name FITS (will be created if it does not exist).
+
+----------------------------
+
+## For an updated version with more data and more results go to: https://github.com/milkha/EPL_KDD
